@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
 const Container = styled(motion.div)`
-  max-width: 900px;
+  max-width: 1100px;
   margin: 0 auto ${({ theme }) => theme.spacing.xl};
   padding: 0 ${({ theme }) => theme.spacing.lg};
 
@@ -20,17 +20,24 @@ const Title = styled.h3`
 `;
 
 const ButtonGroup = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: ${({ theme }) => theme.spacing.md};
-  justify-content: center;
-  flex-wrap: wrap;
+  max-width: 1000px;
+  margin: 0 auto;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const FormatButton = styled(motion.button)`
+  position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.sm};
-  padding: ${({ theme }) => theme.spacing.md} ${({ theme }) => theme.spacing.xl};
+  padding: ${({ theme }) => theme.spacing.lg};
   font-size: ${({ theme }) => theme.typography.fontSize.base};
   font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
   color: ${({ theme, $isLoading }) =>
@@ -59,14 +66,33 @@ const FormatButton = styled(motion.button)`
   }
 
   svg {
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
   }
+`;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    width: 100%;
-    justify-content: center;
-  }
+const FormatLabel = styled.div`
+  font-size: ${({ theme }) => theme.typography.fontSize.base};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.semibold};
+`;
+
+const FormatDimensions = styled.div`
+  font-size: ${({ theme }) => theme.typography.fontSize.sm};
+  color: ${({ theme }) => theme.colors.text.secondary};
+`;
+
+const NewBadge = styled.span`
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: linear-gradient(135deg, #34c759 0%, #30d158 100%);
+  color: white;
+  font-size: 10px;
+  font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
+  padding: 4px 8px;
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 `;
 
 const InstagramIcon = () => (
@@ -82,18 +108,23 @@ const InstagramIcon = () => (
   </svg>
 );
 
-const TikTokIcon = () => (
+const StoriesIcon = () => (
   <svg viewBox="0 0 24 24" fill="none">
-    <path
-      d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"
-      fill="#000000"
-    />
+    <defs>
+      <linearGradient id="stories-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style={{ stopColor: '#833ab4' }} />
+        <stop offset="50%" style={{ stopColor: '#fd1d1d' }} />
+        <stop offset="100%" style={{ stopColor: '#fcb045' }} />
+      </linearGradient>
+    </defs>
+    <rect x="7" y="2" width="10" height="20" rx="2" stroke="url(#stories-gradient)" strokeWidth="2" fill="none" />
+    <circle cx="12" cy="12" r="3" fill="url(#stories-gradient)" />
   </svg>
 );
 
 const LoadingSpinner = styled.div`
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   border: 3px solid ${({ theme }) => theme.colors.text.tertiary};
   border-top-color: ${({ theme }) => theme.colors.accent};
   border-radius: 50%;
@@ -115,23 +146,65 @@ const FormatSelector = ({ onFormatSelect, isLoading }) => {
     >
       <Title>Otimizar para Redes Sociais</Title>
       <ButtonGroup>
+        {/* Instagram Portrait 3:4 - NOVO */}
         <FormatButton
-          onClick={() => onFormatSelect('instagram')}
+          onClick={() => onFormatSelect('instagram-3-4')}
+          disabled={isLoading}
+          $isLoading={isLoading}
+          whileTap={{ scale: 0.95 }}
+        >
+          <NewBadge>NOVO</NewBadge>
+          {isLoading ? <LoadingSpinner /> : <InstagramIcon />}
+          <FormatLabel>Instagram Portrait</FormatLabel>
+          <FormatDimensions>3:4 (1080×1440)</FormatDimensions>
+        </FormatButton>
+
+        {/* Instagram Portrait 4:5 - Popular */}
+        <FormatButton
+          onClick={() => onFormatSelect('instagram-4-5')}
           disabled={isLoading}
           $isLoading={isLoading}
           whileTap={{ scale: 0.95 }}
         >
           {isLoading ? <LoadingSpinner /> : <InstagramIcon />}
-          Instagram (4:5)
+          <FormatLabel>Instagram Portrait</FormatLabel>
+          <FormatDimensions>4:5 (1080×1350)</FormatDimensions>
         </FormatButton>
+
+        {/* Instagram Square */}
         <FormatButton
-          onClick={() => onFormatSelect('tiktok')}
+          onClick={() => onFormatSelect('instagram-square')}
           disabled={isLoading}
           $isLoading={isLoading}
           whileTap={{ scale: 0.95 }}
         >
-          {isLoading ? <LoadingSpinner /> : <TikTokIcon />}
-          TikTok (9:16)
+          {isLoading ? <LoadingSpinner /> : <InstagramIcon />}
+          <FormatLabel>Instagram Square</FormatLabel>
+          <FormatDimensions>1:1 (1080×1080)</FormatDimensions>
+        </FormatButton>
+
+        {/* Instagram Landscape */}
+        <FormatButton
+          onClick={() => onFormatSelect('instagram-landscape')}
+          disabled={isLoading}
+          $isLoading={isLoading}
+          whileTap={{ scale: 0.95 }}
+        >
+          {isLoading ? <LoadingSpinner /> : <InstagramIcon />}
+          <FormatLabel>Instagram Landscape</FormatLabel>
+          <FormatDimensions>1.91:1 (1080×566)</FormatDimensions>
+        </FormatButton>
+
+        {/* Stories/Reels */}
+        <FormatButton
+          onClick={() => onFormatSelect('stories')}
+          disabled={isLoading}
+          $isLoading={isLoading}
+          whileTap={{ scale: 0.95 }}
+        >
+          {isLoading ? <LoadingSpinner /> : <StoriesIcon />}
+          <FormatLabel>Stories/Reels</FormatLabel>
+          <FormatDimensions>9:16 (1080×1920)</FormatDimensions>
         </FormatButton>
       </ButtonGroup>
     </Container>

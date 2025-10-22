@@ -178,9 +178,9 @@ export async function uploadImage(file, onProgress) {
 }
 
 /**
- * Cria um canvas com formato específico (Instagram/TikTok)
+ * Cria um canvas com formato específico (Instagram/TikTok/Stories)
  * @param {string} imageUrl - URL da imagem
- * @param {string} format - 'instagram' ou 'tiktok'
+ * @param {string} format - Formato desejado
  * @returns {Promise<string>} - Data URL da imagem formatada
  */
 export async function formatImage(imageUrl, format) {
@@ -192,13 +192,45 @@ export async function formatImage(imageUrl, format) {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
 
-      // Definir dimensões
-      if (format === 'instagram') {
-        canvas.width = 1080;
-        canvas.height = 1350; // 4:5 ratio
-      } else if (format === 'tiktok') {
-        canvas.width = 1080;
-        canvas.height = 1920; // 9:16 ratio
+      // Definir dimensões baseadas no formato
+      switch (format) {
+        case 'instagram-3-4':
+          // Instagram Portrait 3:4 (NOVO 2025)
+          canvas.width = 1080;
+          canvas.height = 1440;
+          break;
+        case 'instagram-4-5':
+          // Instagram Portrait 4:5 (Popular)
+          canvas.width = 1080;
+          canvas.height = 1350;
+          break;
+        case 'instagram-square':
+          // Instagram Square 1:1
+          canvas.width = 1080;
+          canvas.height = 1080;
+          break;
+        case 'instagram-landscape':
+          // Instagram Landscape 1.91:1
+          canvas.width = 1080;
+          canvas.height = 566;
+          break;
+        case 'stories':
+          // Stories/Reels 9:16 (Instagram & TikTok)
+          canvas.width = 1080;
+          canvas.height = 1920;
+          break;
+        // Manter compatibilidade com código antigo
+        case 'instagram':
+          canvas.width = 1080;
+          canvas.height = 1350;
+          break;
+        case 'tiktok':
+          canvas.width = 1080;
+          canvas.height = 1920;
+          break;
+        default:
+          canvas.width = 1080;
+          canvas.height = 1350;
       }
 
       // Calcular escala para cover
