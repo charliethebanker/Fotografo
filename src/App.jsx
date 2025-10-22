@@ -16,6 +16,7 @@ function App() {
   const [error, setError] = useState(null);
   const [originalImage, setOriginalImage] = useState(null);
   const [editedImage, setEditedImage] = useState(null);
+  const [baseEditedImage, setBaseEditedImage] = useState(null); // Imagem editada original do webhook
   const [isFormatting, setIsFormatting] = useState(false);
   const uploadZoneRef = useRef(null);
 
@@ -45,6 +46,7 @@ function App() {
       // Guardar resultados
       setOriginalImage(result.originalImage);
       setEditedImage(result.editedImage);
+      setBaseEditedImage(result.editedImage); // Guardar base para formatações
 
       // Mudar para estado de resultado
       setCurrentState('result');
@@ -62,12 +64,13 @@ function App() {
 
   // Handler para formatar imagem (Instagram/TikTok)
   const handleFormatSelect = async (format) => {
-    if (!editedImage) return;
+    if (!baseEditedImage) return;
 
     setIsFormatting(true);
 
     try {
-      const formattedImage = await formatImage(editedImage, format);
+      // Sempre usar a imagem base original do webhook
+      const formattedImage = await formatImage(baseEditedImage, format);
       setEditedImage(formattedImage);
 
       // Scroll suave para ver a imagem formatada
@@ -94,6 +97,7 @@ function App() {
     setCurrentState('upload');
     setOriginalImage(null);
     setEditedImage(null);
+    setBaseEditedImage(null);
     setError(null);
     setIsFormatting(false);
 
