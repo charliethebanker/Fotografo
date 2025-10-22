@@ -1,16 +1,65 @@
-# React + Vite
+# Fotógrafo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Editor de fotografias profissional com design minimalista inspirado na Apple. Upload, edição automática via n8n e otimização para redes sociais.
 
-Currently, two official plugins are available:
+## 🚀 Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**Site Live:** [https://charliethebanker.github.io/Fotografo/](https://charliethebanker.github.io/Fotografo/)
 
-## React Compiler
+## ✨ Funcionalidades
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Upload de Imagens** - Drag & drop ou clique para selecionar (máx. 10MB)
+- **Edição Automática** - Processamento via webhook n8n
+- **Comparação Before/After** - Slider interativo para comparar original vs editada
+- **Otimização para Redes Sociais** - 5 formatos Instagram 2025:
+  - Instagram Portrait 3:4 (1080×1440) - NOVO
+  - Instagram Portrait 4:5 (1080×1350) - Popular
+  - Instagram Square 1:1 (1080×1080)
+  - Instagram Landscape 1.91:1 (1080×566)
+  - Stories/Reels 9:16 (1080×1920)
+- **Download Instantâneo** - Descarrega a imagem editada
+- **Design Minimalista** - Inspirado no design da Apple
 
-## Expanding the ESLint configuration
+## 🛠️ Tecnologias
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **React** - Interface de utilizador
+- **Vite** - Build tool e dev server
+- **Styled Components** - CSS-in-JS
+- **Framer Motion** - Animações suaves
+- **n8n Webhook** - Processamento de imagens
+
+## 📦 Instalação
+
+```bash
+# Instalar dependências
+npm install
+
+# Desenvolvimento
+npm run dev
+
+# Build para produção
+npm run build
+
+# Preview da build
+npm run preview
+```
+
+## 🚀 Deploy
+
+O projeto está configurado para deploy automático no GitHub Pages. Qualquer push para a branch `main` desencadeia um deploy automático.
+
+## 🎨 Design
+
+Interface limpa e minimalista inspirada no design da Apple:
+- Tipografia SF Pro
+- Glassmorphism effects
+- Animações suaves
+- Responsive design
+
+## 📝 Licença
+
+MIT
+
+## 👨‍💻 Autor
+
+[charliethebanker](https://github.com/charliethebanker)
