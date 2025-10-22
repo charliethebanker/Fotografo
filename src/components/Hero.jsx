@@ -45,33 +45,7 @@ const Subtitle = styled(motion.p)`
   }
 `;
 
-const CTAButton = styled(motion.button)`
-  font-size: ${({ theme }) => theme.typography.fontSize.base};
-  font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
-  color: white;
-  background-color: ${({ theme }) => theme.colors.accent};
-  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.xl};
-  border-radius: ${({ theme }) => theme.borderRadius.full};
-  box-shadow: ${({ theme }) => theme.shadows.md};
-  transition: all ${({ theme }) => theme.transitions.normal};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.accentHover};
-    box-shadow: ${({ theme }) => theme.shadows.lg};
-    transform: translateY(-2px);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    width: 100%;
-    max-width: 280px;
-  }
-`;
-
-const Hero = ({ onStartClick }) => {
+const Hero = () => {
   return (
     <HeroSection>
       <Title
@@ -89,15 +63,6 @@ const Hero = ({ onStartClick }) => {
         Transforme as suas fotografias com edição automática de qualidade profissional.
         Simples, rápido e elegante.
       </Subtitle>
-      <CTAButton
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
-        onClick={onStartClick}
-        whileTap={{ scale: 0.95 }}
-      >
-        Começar Agora
-      </CTAButton>
     </HeroSection>
   );
 };

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { AnimatePresence } from 'framer-motion';
 import { GlobalStyles } from './styles/GlobalStyles';
@@ -17,12 +17,6 @@ function App() {
   const [originalImage, setOriginalImage] = useState(null);
   const [editedImage, setEditedImage] = useState(null);
   const [isFormatting, setIsFormatting] = useState(false);
-  const uploadZoneRef = useRef(null);
-
-  // Handler para quando o Hero CTA é clicado
-  const handleHeroClick = () => {
-    uploadZoneRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  };
 
   // Handler para seleção de ficheiro
   const handleFileSelect = async (file) => {
@@ -106,14 +100,12 @@ function App() {
       <GlobalStyles />
 
       {/* Hero Section */}
-      <Hero onStartClick={handleHeroClick} />
+      <Hero />
 
       {/* Upload Zone */}
-      <div ref={uploadZoneRef}>
-        {currentState === 'upload' && (
-          <UploadZone onFileSelect={handleFileSelect} error={error} />
-        )}
-      </div>
+      {currentState === 'upload' && (
+        <UploadZone onFileSelect={handleFileSelect} error={error} />
+      )}
 
       {/* Loading State */}
       <AnimatePresence>
