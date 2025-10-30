@@ -1,3 +1,5 @@
+import { getApiKey } from './apiKeyStorage';
+
 // Configuração da API n8n
 const CONFIG = {
   webhookUrl: 'https://olancador.pt/webhook/fotografo',
@@ -89,12 +91,25 @@ export async function uploadImage(file, onProgress) {
     console.log('📤 A enviar para webhook:', CONFIG.webhookUrl);
     console.log('📁 Ficheiro:', file.name, '|', (file.size / 1024).toFixed(2), 'KB');
 
+    // Obter API key do localStorage (se existir)
+    const apiKey = getApiKey();
+    if (apiKey) {
+      console.log('🔑 API key do utilizador detectada');
+    } else {
+      console.log('⚠️ Nenhuma API key configurada - usando configuração padrão do n8n');
+    }
+
     let response;
 
     if (CONFIG.useFormData) {
       // Enviar via FormData (preferido)
       const formData = new FormData();
       formData.append('file', file);
+
+      // Adicionar API key se existir
+      if (apiKey) {
+        formData.append('apiKey', apiKey);
+      }
 
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), CONFIG.requestTimeout);
@@ -118,16 +133,23 @@ export async function uploadImage(file, onProgress) {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), CONFIG.requestTimeout);
 
+      const payload = {
+        image: base64,
+        filename: file.name,
+        mimeType: file.type,
+      };
+
+      // Adicionar API key se existir
+      if (apiKey) {
+        payload.apiKey = apiKey;
+      }
+
       response = await fetch(CONFIG.webhookUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          image: base64,
-          filename: file.name,
-          mimeType: file.type,
-        }),
+        body: JSON.stringify(payload),
         signal: controller.signal,
       });
 

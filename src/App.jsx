@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { AnimatePresence } from 'framer-motion';
+import styled from 'styled-components';
 import { GlobalStyles } from './styles/GlobalStyles';
 import { theme } from './styles/theme';
 import Hero from './components/Hero';
@@ -9,7 +10,45 @@ import Loading from './components/Loading';
 import ComparisonSlider from './components/ComparisonSlider';
 import FormatSelector from './components/FormatSelector';
 import DownloadSection from './components/DownloadSection';
+import Settings from './components/Settings';
 import { validateFile, uploadImage, formatImage, downloadImage } from './services/api';
+
+// Botão flutuante de configurações
+const SettingsButton = styled.button`
+  position: fixed;
+  bottom: ${({ theme }) => theme.spacing.lg};
+  right: ${({ theme }) => theme.spacing.lg};
+  width: 56px;
+  height: 56px;
+  background: ${({ theme }) => theme.colors.accent};
+  color: white;
+  border-radius: 50%;
+  box-shadow: ${({ theme }) => theme.shadows.lg};
+  font-size: ${({ theme }) => theme.typography.fontSize.xl};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all ${({ theme }) => theme.transitions.normal};
+  z-index: 999;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.accentHover};
+    box-shadow: ${({ theme }) => theme.shadows.xl};
+    transform: scale(1.1) rotate(90deg);
+  }
+
+  &:active {
+    transform: scale(0.95) rotate(90deg);
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    bottom: ${({ theme }) => theme.spacing.md};
+    right: ${({ theme }) => theme.spacing.md};
+    width: 48px;
+    height: 48px;
+    font-size: ${({ theme }) => theme.typography.fontSize.lg};
+  }
+`;
 
 function App() {
   const [currentState, setCurrentState] = useState('upload'); // 'upload', 'processing', 'result'
@@ -18,6 +57,7 @@ function App() {
   const [editedImage, setEditedImage] = useState(null);
   const [baseEditedImage, setBaseEditedImage] = useState(null); // Imagem editada original do webhook
   const [isFormatting, setIsFormatting] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const uploadZoneRef = useRef(null);
 
   // Handler para quando o Hero CTA é clicado
@@ -142,6 +182,17 @@ function App() {
           <DownloadSection onDownload={handleDownload} onNewPhoto={handleNewPhoto} />
         </>
       )}
+
+      {/* Settings Button */}
+      <SettingsButton
+        onClick={() => setIsSettingsOpen(true)}
+        title="Configurações"
+      >
+        ⚙️
+      </SettingsButton>
+
+      {/* Settings Modal */}
+      <Settings isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </ThemeProvider>
   );
 }
