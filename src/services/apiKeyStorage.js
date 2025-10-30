@@ -93,16 +93,17 @@ export async function testApiKey(apiKey) {
   try {
     // Testar com uma chamada simples à API do Google Gemini
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`,
       {
         method: 'POST',
         headers: {
+          'x-goog-api-key': apiKey,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           contents: [
             {
-              parts: [{ text: 'Hello' }]
+              parts: [{ text: 'test' }]
             }
           ]
         })
